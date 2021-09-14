@@ -1,3 +1,4 @@
+
 using Microsoft.AspNetCore.Mvc;
 using SerialNumberProvider.Api.Models;
 using SerialNumberProvider.Core.Services.Abstract;
@@ -29,6 +30,20 @@ namespace SerialNumberProvider.Api.Controllers
             return Ok(generatedSerialNumber);
         }
 
+
+        [HttpPost("customGenerate")]
+        [ProducesResponseType(typeof(string), 200)]
+        public IActionResult GetSerialNumberForDevice(GenerateSerialNumberRequestModel requestModel, bool isMicrowave)
+        {
+            GenerateSerialNumberRequest request = PrepareGenerateSerialNumberRequest(requestModel);
+
+            string generatedSerialNumber = _serialNumberGenerator.GenerateSerialNumber(request, isMicrowave);
+
+            return Ok(generatedSerialNumber);
+        }
+
+
+
         [HttpPost("validate")]
         [ProducesResponseType(typeof(bool), 200)]
         public IActionResult ValidateSerialNumberForDevice(ValidateSerialNumberRequestModel requestModel)
@@ -43,7 +58,7 @@ namespace SerialNumberProvider.Api.Controllers
         private static GenerateSerialNumberRequest PrepareGenerateSerialNumberRequest(
             GenerateSerialNumberRequestModel response)
             => new GenerateSerialNumberRequest(response.Id, response.Name, response.Version, response.ProductionDate);
-        
+
         private static ValidateSerialNumberRequest PrepareValidateSerialNumberRequest(
             ValidateSerialNumberRequestModel response)
             => new ValidateSerialNumberRequest(response.Id, response.Name, response.Version, response.ProductionDate,
