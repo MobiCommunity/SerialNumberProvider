@@ -12,7 +12,6 @@ namespace SerialNumberProvider.Core.Services.Concrete
             => ComputeSha256Hash($"{request.Id}+{request.Version}+{request.Name}+{request.ProductionDate.Ticks}");
         public string GenerateMD5SerialNumber(GenerateSerialNumberRequest request)
             => ComputeMD5Hash($"{request.Id}+{request.Version}+{request.Name}+{request.ProductionDate.Ticks}");
-        
 
         private static string ComputeSha256Hash(string rawData)
         {

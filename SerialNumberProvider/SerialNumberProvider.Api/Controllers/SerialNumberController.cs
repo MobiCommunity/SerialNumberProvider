@@ -23,7 +23,7 @@ namespace SerialNumberProvider.Api.Controllers
         public IActionResult GetSHA256SerialNumberForDevice(GenerateSerialNumberRequestModel requestModel)
         {
             GenerateSerialNumberRequest request = PrepareGenerateSerialNumberRequest(requestModel);
-            
+
             string generatedSerialNumber = _serialNumberGenerator.GenerateSHA256SerialNumber(request);
 
             return Ok(generatedSerialNumber);
@@ -47,10 +47,12 @@ namespace SerialNumberProvider.Api.Controllers
         {
             ValidateSerialNumberRequest request = PrepareValidateSerialNumberRequest(requestModel);
 
-            bool isCorrect = _serialNumberValidator.ValidateSHA256(request);
-            if (isCorrect == false)
-                _serialNumberValidator.ValidateMD5(request);
-            return Ok(isCorrect);
+            if (_serialNumberValidator.ValidateSHA256(request) == true)
+                return Ok(true);
+            else if (_serialNumberValidator.ValidateMD5(request) == true)
+                return Ok(true);
+            else
+                return Ok(false);
         }
 
         private static GenerateSerialNumberRequest PrepareGenerateSerialNumberRequest(
