@@ -42,8 +42,6 @@ namespace SerialNumberProvider.Api.Controllers
             return Ok(generatedSerialNumber);
         }
 
-
-
         [HttpPost("validate")]
         [ProducesResponseType(typeof(bool), 200)]
         public IActionResult ValidateSerialNumberForDevice(ValidateSerialNumberRequestModel requestModel)

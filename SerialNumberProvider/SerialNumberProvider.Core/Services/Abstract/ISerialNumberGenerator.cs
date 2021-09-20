@@ -7,6 +7,5 @@ namespace SerialNumberProvider.Core.Services.Abstract
     {
         string GenerateSerialNumber(GenerateSerialNumberRequest request);
         string GenerateSerialNumber(GenerateSerialNumberRequest request, bool isMicrowave);
-
     }
 }
