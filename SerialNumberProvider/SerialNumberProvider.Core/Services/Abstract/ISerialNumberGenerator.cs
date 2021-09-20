@@ -5,7 +5,7 @@ namespace SerialNumberProvider.Core.Services.Abstract
 {
     public interface ISerialNumberGenerator
     {
-        string GenerateSerialNumber(GenerateSerialNumberRequest request);
-        string GenerateSerialNumber(GenerateSerialNumberRequest request, bool isMicrowave);
+        string GenerateSHA256SerialNumber(GenerateSerialNumberRequest request);
+        string GenerateMD5SerialNumber(GenerateSerialNumberRequest request);
     }
 }

@@ -1,4 +1,3 @@
-
 using Microsoft.AspNetCore.Mvc;
 using SerialNumberProvider.Api.Models;
 using SerialNumberProvider.Core.Services.Abstract;
@@ -19,25 +18,25 @@ namespace SerialNumberProvider.Api.Controllers
             _serialNumberValidator = serialNumberValidator;
         }
 
-        [HttpPost]
+        [HttpPost("sha256")]
         [ProducesResponseType(typeof(string), 200)]
-        public IActionResult GetSerialNumberForDevice(GenerateSerialNumberRequestModel requestModel)
+        public IActionResult GetSHA256SerialNumberForDevice(GenerateSerialNumberRequestModel requestModel)
         {
             GenerateSerialNumberRequest request = PrepareGenerateSerialNumberRequest(requestModel);
-
-            string generatedSerialNumber = _serialNumberGenerator.GenerateSerialNumber(request);
+            
+            string generatedSerialNumber = _serialNumberGenerator.GenerateSHA256SerialNumber(request);
 
             return Ok(generatedSerialNumber);
         }
 
 
-        [HttpPost("customGenerate")]
+        [HttpPost("MD5")]
         [ProducesResponseType(typeof(string), 200)]
-        public IActionResult GetSerialNumberForDevice(GenerateSerialNumberRequestModel requestModel, bool isMicrowave)
+        public IActionResult GetMD5SerialNumberForDevice(GenerateSerialNumberRequestModel requestModel)
         {
             GenerateSerialNumberRequest request = PrepareGenerateSerialNumberRequest(requestModel);
 
-            string generatedSerialNumber = _serialNumberGenerator.GenerateSerialNumber(request, isMicrowave);
+            string generatedSerialNumber = _serialNumberGenerator.GenerateMD5SerialNumber(request);
 
             return Ok(generatedSerialNumber);
         }
@@ -48,8 +47,9 @@ namespace SerialNumberProvider.Api.Controllers
         {
             ValidateSerialNumberRequest request = PrepareValidateSerialNumberRequest(requestModel);
 
-            bool isCorrect = _serialNumberValidator.Validate(request);
-
+            bool isCorrect = _serialNumberValidator.ValidateSHA256(request);
+            if (isCorrect == false)
+                _serialNumberValidator.ValidateMD5(request);
             return Ok(isCorrect);
         }
 
